@@ -1,0 +1,1 @@
+# senacit-sistema-inventario
