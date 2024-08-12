@@ -1,0 +1,74 @@
+{% extends "base.html" %}
+
+{% block title %}
+    Buscar Usuario
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    {% if registro %}
+    <h2>Información del Usuario</h2>
+    <hr>
+    <form method="post"
+        {{ form.hidden_tag() }}
+        {{ form.csrf_token }}
+        <div class="section-border">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="nombre">Nombre: <strong>{{ registro[0] }}</strong></label>
+                    </div>
+                    <div class="form-group">
+                        <label for="apellido">Apellido: <strong>{{ registro[1] }}</strong></label>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="rol_usuario" class="form-label">
+                            {{ form.rol_usuario.label }}
+                        </label>
+                        {{ form.rol_usuario(class='form-field') }}
+                        {{ form.id_usuario(class='form-field') }}
+                    </div>
+                    <div class="form-group">
+                        <label for="estado_usuario" class="form-label">
+                            {{ form.estado_usuario.label }}
+                        </label>
+                        {{ form.estado_usuario(class='form-field') }}
+                    </div>
+                    <div class="form-group">
+                        <label for="es_jefe_departamento" class="form-label">
+                            {{ form.es_jefe_departamento.label }}
+                        </label>
+                        {{ form.es_jefe_departamento(class='form-field') }}
+                    </div>
+                    <div class="form-group">
+                        <label for="es_tecnico" class="form-label">
+                            {{ form.es_tecnico.label }}
+                        </label>
+                        {{ form.es_tecnico(class='form-field') }}
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <button type="submit" class="btn btn-primary">
+                    Guardar Cambios
+                </button>
+            </div>
+        </div>
+    </form>
+    
+    <div class="form-group">
+        <a class="btn btn-danger"
+                onclick="event.preventDefault(); 
+                if(confirm('¿Está seguro de que deseas eliminar este usuario?')) { 
+                    document.getElementById('eliminar-usuario').submit(); 
+                }">
+                <b>Eliminar Usuario</b>
+        </a>
+        <form id="eliminar-usuario" action="{{ url_for('admin_perfil_usuario_bp.eliminar_usuario',id_usuario=registro[6])}}" method="post">
+        </form>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

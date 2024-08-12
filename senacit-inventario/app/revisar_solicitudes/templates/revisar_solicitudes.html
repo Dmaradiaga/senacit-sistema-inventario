@@ -1,0 +1,198 @@
+{% extends "base.html" %}
+
+{% block title %}
+    Revisar Solicitudes
+{% endblock %}
+
+{% block content %}
+{% if mensaje_error %}
+    <div class="alert alert-warning">
+        {{ mensaje_error }}
+    </div>
+{% endif %}
+{% if registros %}
+    <hr>
+    <div class="alert alert-warning">
+        <h3>Solicitudes sin Aprobar</h3>
+    </div>
+    <div class="accordion accordion-flush" id="accordionFlushExample">
+
+    {% for registro in registros %}
+        {% if registro[15]==0 %}
+
+        <div class="accordion-item">
+        <h2 class="accordion-header" id="flush-heading{{ loop.index }}">
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapse{{ loop.index }}" aria-expanded="false" aria-controls="flush-collapse{{ loop.index }}">
+            <span class="fw-bold text-primary"> {{ registro[1] }}</span>
+            </button>
+        </h2>
+        <div id="flush-collapse{{ loop.index }}" class="accordion-collapse collapse" aria-labelledby="flush-heading{{ loop.index }}" data-bs-parent="#accordionFlushExample">
+            <div class="accordion-body">
+            <ul class="list-group">
+                <li class="list-group-item"><strong>Nombre:</strong> <span class="text-primary">{{ registro[1] }}</span></li>
+                <li class="list-group-item"><strong>Fecha Solicitud:</strong> <span class="text-primary">{{ registro[2] }}</span></li>
+                <li class="list-group-item"><strong>Lugar:</strong> <span class="text-primary">{{ registro[3] }}</span></li>
+                <li class="list-group-item"><strong>Justificacion Descargo:</strong> <span class="text-primary">{{ registro[4] }}</span></li>
+                <li class="list-group-item"><strong>Número de Identidad:</strong> <span class="text-primary">{{ registro[5] }}</span></li>
+                <li class="list-group-item"><strong>Cargo:</strong> <span class="text-primary">{{ registro[6] }}</span></li>
+                <li class="list-group-item"><strong>Marca:</strong> <span class="text-primary">{{ registro[7] }}</span></li>
+                <li class="list-group-item"><strong>Serie:</strong> <span class="text-primary">{{ registro[8] }}</span></li>
+                <li class="list-group-item"><strong>Número de Inventario:</strong> <span class="text-primary">{{ registro[9] }}</span></li>
+                <li class="list-group-item"><strong>Diagnostico:</strong> <span class="text-primary">{{ registro[10] }}</span></li>
+                <li class="list-group-item"><strong>Modelo:</strong> <span class="text-primary">{{ registro[11] }}</span></li>
+                <li class="list-group-item"><strong>Descripcion:</strong> <span class="text-primary">{{ registro[12] }}</span></li>
+                <li class="list-group-item"><strong>Departamento Interno:</strong> <span class="text-primary">{{ registro[13] }}</span></li>
+                <li class="list-group-item">
+                    <span class="text-primary">
+                        <img src="{{ registro[14] }}" alt="cargando..." width="150" height="150">
+                    </span>
+                </li>
+                <li class="list-group-item">
+                    <strong>Firma Jefe Departamento:</strong> 
+                    {% if registro[16] %}
+                        <span class="text-primary">
+                            <img src="{{ registro[16] }}" alt="cargando..." width="150" height="150">
+                        </span>
+                    {% endif %}
+                </li>
+                <li class="list-group-item">
+                    <strong>Firma Responsable Dictamen:</strong> 
+                        {% if registro[17] %}
+                        <span class="text-primary">
+                            <img src="{{ registro[17] }}" alt="cargando..." width="150" height="150">
+                        </span>
+                    {% endif %}
+                </li>
+                <li class="list-group-item"> 
+                    <strong>Firma Responsable Bien:</strong>
+                    {% if registro[18] %}
+                        <span class="text-primary">
+                            <img src="{{ registro[18] }}" alt="cargando..." width="150" height="150">
+                        </span>
+                    {% endif %}
+                </li>
+                <li class="list-group-item">
+                    <strong>Firma Jefe Bien:</strong> 
+                    {% if registro[19] %}
+                        <span class="text-primary">
+                            <img src="{{ registro[19] }}" alt="cargando..." width="150" height="150">
+                        </span>
+                    {% endif %}
+                </li>
+                {% if es_jefe_departamento %}
+                    <li class="list-group-item">
+                        <form action="{{ url_for('revisar_solicitudes_bp.agregar_firma') }}" method="POST">
+                            <input type="hidden" name="id_solicitud_descargo" value="{{registro[0]}}">
+                            <button type="submit" class="btn btn-primary">Agregar Firma</button>
+                        </form>
+                    </li>
+                {% endif %}
+                {% if aprobar_solicitud %}
+                    <li class="list-group-item">
+                        <form action="{{ url_for('revisar_solicitudes_bp.aprobar_solicitud') }}" method="POST">
+                            <input type="hidden" name="id_solicitud_descargo" value="{{registro[0]}}">
+                            <button type="submit" class="btn btn-primary">Aprobar Solicitud</button>
+                        </form>
+                    </li>
+                {% endif %}
+                {% if generar_dictamen %}
+                    <li class="list-group-item">
+                        <form action="{{ url_for('revisar_solicitudes_bp.agregar_dictamen') }}" method="POST">
+                            <input type="hidden" name="id_solicitud_descargo" value="{{registro[0]}}">
+                            <div class="form-group">
+                                <label for="diagnostico"><strong>Diagnóstico</strong></label>
+                                <input type="text" class="form-control" id="diagnostico" name="diagnostico">
+                            </div>
+                            <div class="form-group">
+                                <label for="descripcion"><strong>Descripción</strong></label>
+                                <textarea class="form-control" id="descripcion" name="descripcion" rows="4"></textarea>
+                            </div>
+                            <button type="submit" class="btn btn-primary">Enviar Dictamen</button>
+                        </form>
+                    </li>
+                {% endif %}
+            </ul>
+            </div>
+        </div>
+        </div>
+      {% endif %}
+    {% endfor %}
+  <br> <hr>
+    <div class="alert alert-success">
+        <h3>Solicitudes Aprobadas</h3>
+    </div>
+    {% for registro in registros %}
+        {% if registro[15]==1 %}
+
+        <div class="accordion-item">
+        <h2 class="accordion-header" id="flush-heading{{ loop.index }}">
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapse{{ loop.index }}" aria-expanded="false" aria-controls="flush-collapse{{ loop.index }}">
+            <span class="fw-bold text-primary"> {{ registro[1] }}</span>
+            </button>
+        </h2>
+        <div id="flush-collapse{{ loop.index }}" class="accordion-collapse collapse" aria-labelledby="flush-heading{{ loop.index }}" data-bs-parent="#accordionFlushExample">
+            <div class="accordion-body">
+            <ul class="list-group">
+                <li class="list-group-item"><strong>Nombre:</strong> <span class="text-primary">{{ registro[1] }}</span></li>
+                <li class="list-group-item"><strong>Fecha Solicitud:</strong> <span class="text-primary">{{ registro[2] }}</span></li>
+                <li class="list-group-item"><strong>Lugar:</strong> <span class="text-primary">{{ registro[3] }}</span></li>
+                <li class="list-group-item"><strong>Justificacion Descargo:</strong> <span class="text-primary">{{ registro[4] }}</span></li>
+                <li class="list-group-item"><strong>Número de Identidad:</strong> <span class="text-primary">{{ registro[5] }}</span></li>
+                <li class="list-group-item"><strong>Cargo:</strong> <span class="text-primary">{{ registro[6] }}</span></li>
+                <li class="list-group-item"><strong>Marca:</strong> <span class="text-primary">{{ registro[7] }}</span></li>
+                <li class="list-group-item"><strong>Serie:</strong> <span class="text-primary">{{ registro[8] }}</span></li>
+                <li class="list-group-item"><strong>Número de Inventario:</strong> <span class="text-primary">{{ registro[9] }}</span></li>
+                <li class="list-group-item"><strong>Diagnostico:</strong> <span class="text-primary">{{ registro[10] }}</span></li>
+                <li class="list-group-item"><strong>Modelo:</strong> <span class="text-primary">{{ registro[11] }}</span></li>
+                <li class="list-group-item"><strong>Descripcion:</strong> <span class="text-primary">{{ registro[12] }}</span></li>
+                <li class="list-group-item"><strong>Departamento Interno:</strong> <span class="text-primary">{{ registro[13] }}</span></li>
+                <li class="list-group-item">
+                    <span class="text-primary">
+                        <img src="{{ registro[14] }}" alt="cargando..." width="150" height="150">
+                    </span>
+                </li>
+                <li class="list-group-item">
+                    <strong>Firma Jefe Departamento:</strong> 
+                    {% if registro[16] %}
+                        <span class="text-primary">
+                            <img src="{{ registro[16] }}" alt="cargando..." width="150" height="150">
+                        </span>
+                    {% endif %}
+                </li>
+                <li class="list-group-item">
+                    <strong>Firma Responsable Dictamen:</strong> 
+                        {% if registro[17] %}
+                        <span class="text-primary">
+                            <img src="{{ registro[17] }}" alt="cargando..." width="150" height="150">
+                        </span>
+                    {% endif %}
+                </li>
+                <li class="list-group-item"> 
+                    <strong>Firma Responsable Bien:</strong>
+                    {% if registro[18] %}
+                        <span class="text-primary">
+                            <img src="{{ registro[18] }}" alt="cargando..." width="150" height="150">
+                        </span>
+                    {% endif %}
+                </li>
+                <li class="list-group-item">
+                    <strong>Firma Jefe Bien:</strong> 
+                    {% if registro[19] %}
+                        <span class="text-primary">
+                            <img src="{{ registro[19] }}" alt="cargando..." width="150" height="150">
+                        </span>
+                    {% endif %}
+                </li>
+
+            </ul>
+            </div>
+        </div>
+        </div>
+      {% endif %}
+    {% endfor %}
+    </div>
+    </div>
+{% else %}
+    <h3>No hay solicitudes</h3>
+{% endif %}
+{% endblock %}

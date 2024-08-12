@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+
+{% block title %}
+     Editar Imágenes Inventario
+{% endblock %}
+
+{% block content %}
+<h3>Editar Imágenes</h3> <br> <hr> <br>
+ <div class="row">
+            {% for imagen in imagenes %}
+                <div class="col-md-6">
+                    <div class="card mb-6">
+                        <img src="{{ imagen.secure_url }}" class="card-img-top" alt="{{ imagen.public_id }}">
+                        <div class="card-body">
+                            <form action="{{ url_for('editar_registro_bp.editar_imagenes_registro_inventario', numero_inventario=numero_inventario) }}" method="post" enctype="multipart/form-data">
+                                <div class="form-group">
+                                    <input type="hidden" value="{{ loop.index0 }}" name="imagen_indice">
+                                    <input type="file" class="form-control-file" id="image-{{ loop.index0 }}" name="imagen">
+                                </div>
+                                <button type="submit" class="btn btn-primary">Subir</button>
+                            </form>
+                        </div>  
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+{% endblock %}
+

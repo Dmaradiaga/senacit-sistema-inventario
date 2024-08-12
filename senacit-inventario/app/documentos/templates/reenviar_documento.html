@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+
+{% block title %}
+    Reenviar Documento
+{% endblock %}
+
+{% block content %}
+<h1>Reenviar Documento</h1> <hr> <br>
+<div class="container">
+    <div class="row">
+        <div class="col-md-6">
+            <form method="POST" action="{{ url_for('documentos_bp.reenviar_documento',id_documento=id_documento, id_url_documento=id_url_documento) }}" enctype="multipart/form-data">
+                <div class="form-group">
+                    <label for="numero_identidad_destinatario" class="form-label">
+                    {{ form.numero_identidad_destinatario.label }}</label>
+                    {{ form.numero_identidad_destinatario(class='form-field') }}
+                </div>
+                <div class="form-group">
+                    <label for="documento" class="form-label">
+                    {{ form.documento.label }}</label>
+                    {{ form.documento(class='form-field') }}
+                </div>
+                <button type="submit" class="btn-submit">
+                    <h4> Reenviar </h4>
+                </button>
+            </form> 
+        </div>
+    </div>
+</div>
+{% endblock %}

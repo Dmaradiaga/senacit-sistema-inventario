@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>  
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}{% endblock %}</title>
+    <link rel="icon" href="{{ url_for('static', filename='imagenes/favicon.ico') }}" type="image/x-icon">
+    <!-- Agrega los estilos CSS de Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-iYQeCzEYFbKjA/T2uDLTpkwGzCiq6soy8tYaI1GyVh/UjpbCx/TYkiZhlZB6+fzT" crossorigin="anonymous">
+    <style>
+        .container {
+            max-width: 1150px;
+            margin: 0 auto; /* Esto centrará el contenedor en la página */
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            background-color: #f9f9f9;
+        }
+
+        .container-content {
+            max-width: 350px;
+            margin: 0 auto; /* Esto centrará el contenedor en la página */
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            background-color: #f9f9f9;
+            /* Agregar altura fija o mínima */
+            min-height: 100px; /* Establecer una altura mínima */
+            height: auto; /* Establecer una altura fija, por ejemplo, 200px */
+        }
+
+        td {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .navbar-nav {
+            width: 100%; /* Establecer el ancho del navbar al 100% */
+        }
+
+        .navbar-nav .nav-item {
+            border-right: 1px solid rgba(0,0,0,.1); /* Establecer borde derecho */
+            padding-right: 10px; /* Añadir espacio a la derecha de cada elemento */
+        }
+
+        .navbar-nav .nav-item:last-child {
+            border-right: none; /* Eliminar borde derecho del último elemento */
+        }
+
+        .form-group {
+            margin-bottom: 10px; /* Reducir el margen inferior */
+        }
+    
+        .form-label {
+            font-weight: bold;
+            margin-bottom: 5px; /* Reducir el margen inferior */
+        }
+    
+        .form-field {
+            width: 100%;
+            padding: 5px; /* Reducir el padding */
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-sizing: border-box;
+        }
+    
+        .btn-submit {
+            display: block;
+            width: 100%;
+            padding: 8px; /* Reducir el padding */
+            border: none;
+            border-radius: 5px;
+            background-color: #007bff;
+            color: #fff;
+            font-size: 14px; /* Reducir el tamaño de la fuente */
+            cursor: pointer;
+        }
+
+        .section-border {
+            border: 1px solid #dee2e6;
+            border-radius: 5px;
+            padding: 10px; /* Reducir el padding */
+            margin-bottom: 15px; /* Reducir el margen inferior */
+        }
+        
+        .section-border > form-login {
+            height: 150px;
+        }
+
+        legend {
+            font-size: 16px; /* Reducir el tamaño de la fuente */
+            font-weight: bold;
+            margin-bottom: 10px; /* Reducir el margen inferior */
+        }
+
+        .auto-adjust-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .auto-adjust-table th, .auto-adjust-table td {
+            border: 1px solid #ddd;
+            padding: 5px; /* Reducir el padding */
+            text-align: left;
+        }
+
+        .auto-adjust-table th {
+            background-color: #f2f2f2;
+            white-space: nowrap; /* Evita que el texto en los encabezados se rompa en varias líneas */
+        }
+
+        .auto-adjust-table td {
+            white-space: nowrap; /* Evita que el texto en las celdas se rompa en varias líneas */
+        }
+
+        body {
+            background-image: url('{{ url_for("static", filename="imagenes/senacit-fondo-pantalla.jpg") }}');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            background-repeat: no-repeat;
+            height: 100vh;
+            margin: 0;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light navbar-nav full-width-image">
+        <div class="container">
+            <a class="navbar-brand" href="/">
+                <img src="{{ url_for('static', filename='imagenes/senacit-navbar.png') }}" style="width: 160px; height: 50px;" alt="icono" class="mr-2">
+            </a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                {% if 'tipo_usuario' in session %}
+                <ul class="navbar-nav mr-auto">
+                    {% if 'tipo_usuario' in session and session['tipo_usuario'] == 'Administrador' %}
+                        <li class="nav-item">
+                            <a class="nav-link" href="/agregar"><b>Agregar</b></a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/editar_inventario"><b>Editar Inventario</b></a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/bodega"><b>Bodega</b></a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/editar_bodega"><b>Editar Bodega</b></a>
+                        </li>
+                    {% endif %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="/consultas"><b>Consultas</b></a>
+                    </li>
+                    {% if 'es_jefe_departamento' in session and session['es_jefe_departamento'] == 1 %}
+                        <li class="nav-item">
+                            <a class="nav-link" href="/documentos"><b>Enviar Documento</b></a>
+                        </li>
+                    {% endif %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="/perfil"><b>Perfil</b></a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                            Más
+                        </button>
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            <a class="dropdown-item" href="/descargo"><b>Descargo</b></a>
+                            <a class="dropdown-item" href="/traslado"><b>Traslado</b></a>
+                            <a class="dropdown-item" href="/documentos/ver_documentos"><b>Ver documentos</b></a>
+                            <a class="dropdown-item" href="/solicitudes_descargo"><b>Solicitudes descargo</b></a>
+                            <a class="dropdown-item" href="/solicitudes_traslado"><b>Solicitudes traslado</b></a>
+                            {% if 'es_jefe_departamento' in session and session['es_jefe_departamento'] == 1 or 'es_tecnico' in session and session['es_tecnico'] == 1 %}
+                                <a class="dropdown-item" href="/revisar_solicitudes_descargo"><b>Revisar solicitudes descargo</b></a>
+                            {% endif %}
+                            {% if 'es_jefe_departamento' in session and session['es_jefe_departamento'] == 1 %}
+                                <a class="dropdown-item" href="/revisar_solicitudes_traslado"><b>Revisar solicitudes traslado</b></a>
+                            {% endif %}
+                            {% if 'tipo_usuario' in session and session['tipo_usuario'] == 'Administrador' %}
+                                <a class="dropdown-item" href="/usuarios"><b>Usuarios</b></a>
+                                <a class="dropdown-item" href="/agregar_usuario"><b>Agregar Usuario</b></a>
+                                <a class="dropdown-item" href="/bitacora"><b>Revisar Bitácora</b></a>
+                            {% endif %}
+                            <hr>
+                            <a class="dropdown-item" href="/salir"><b>Salir</b></a>
+                        </div>
+                    </li>
+                </ul>
+                {% endif %}
+            </div>
+        </div>
+    </nav>
+    
+    <br>
+    <!-- JavaScript Bundle with Popper -->
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>   
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-u1OknCvxWvY5kfmNBILK2hRnQC3Pr17a+RTT6rIHI7NnikvbZlHgTPOOmMi466C8" crossorigin="anonymous"></script>    
+    <div class="container-content"> 
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                <div class="alert alert-{{ category }}">
+                    <h3>{{ message }}</h3>
+                </div> <hr>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+        
+        {% block content %}
+        <!-- Contenido específico del template -->
+        {% endblock %}
+    </div>
+    <br>
+</body>
+</html>

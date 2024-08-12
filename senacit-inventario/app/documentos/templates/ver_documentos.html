@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+
+{% block title %}
+    Mis Documentos
+{% endblock %}
+
+{% block content %}
+<h1>Mis Documentos</h1> <hr>
+<div class="container">
+    {% if registros %}
+    <div class="row">
+            {% for registro in registros %}
+            
+                    <ul style="list-style-type: none; padding-left: 0;">
+                        <li><strong>Número Identidad Destinatario:</strong> {{ registro[1] | formato_numero_identidad }}</li>
+                        <li><strong>Número Identidad Remitente:</strong> {{ registro[2] | formato_numero_identidad }}</li>
+                        <li><strong>Nombre Remitente:</strong> {{ registro[3] }}</li>
+                        <li><strong>Ver Documento:</strong> <a href="{{ registro[4] }}" target="_blank">{{ registro[4] }}</a></li>
+                        <li><strong>Fecha Envío:</strong> {{ registro[6] }}</li> <br>   
+                        {% if numero_identidad==registro[2] %}
+                            <li>
+                                <a class="btn btn-primary" href="{{ url_for('documentos_bp.reenviar_documento', id_documento=registro[0], id_url_documento=registro[5]) }}">
+                                    <b>Reenviar Documento</b>
+                                </a>                                
+                                <a class="btn btn-danger"
+                                onclick="event.preventDefault(); if(confirm('¿Estás seguro de que deseas eliminar este documento?')) { document.getElementById('eliminar-form-{{ registro[0] }}').submit(); }">
+                                  <b>Eliminar Documento</b>
+                                  </a>
+                                <form id="eliminar-form-{{ registro[0] }}" action="{{ url_for('documentos_bp.eliminar_documento', id_documento=registro[0],id_url_documento=registro[5]) }}" 
+                                                                           method="post" style="display: none;">
+                                    <input type="hidden" name="_method" value="DELETE">                        
+                                </form>
+                            </li>
+                        {% endif %}
+                    </ul>
+                    <hr>
+                
+            {% endfor %}
+    </div>
+    {% else %}
+    <b>No hay documentos</b>
+    {% endif %}
+</div>
+{% endblock %}

@@ -1,0 +1,64 @@
+{% extends 'base.html' %}
+
+{% block title %}Registro Bitácora{% endblock %}
+
+{% block content %}
+<h1>Registro de Actividades</h1>
+
+<form method="POST" action="{{ url_for('bitacora_bp.index') }}">
+    {{ form.hidden_tag() }}
+    <div class="section-border">
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    {{ form.numero_identidad_usuario.label(class="form-label") }}
+                    {{ form.numero_identidad_usuario(class="form-control") }}
+                </div>
+                <div class="form-group">
+                    {{ form.nombre_tabla.label(class="form-label") }}
+                    {{ form.nombre_tabla(class="form-control") }}
+                </div>
+                <div class="form-group">
+                    <button type="submit" class="btn-submit">
+                        <h4> Buscar </h4>
+                     </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+<div class="table-responsive">
+    {% if registros %}
+    <table class="table">
+        <thead>
+            <tr style="background-color: bisque;">
+                <th>Nombre de Tabla</th> 
+                <th>Tipo de Operación</th>
+                <th>Número de Identidad del Usuario</th>
+                <th>Fecha y Hora</th>
+                <th>Detalle Actividad</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for registro in registros %}
+            <tr>
+                <th>{{ registro[1] }}</th>
+                <th>{{ registro[2] }}</th>
+                <th>{{ registro[3] }}</th>
+                <th>{{ registro[4] }}</th>
+                <th>{{ registro[5] }}</th>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    
+    {% else %}
+        <div class="section-border">
+            <div class="row">
+                <h3>No hay datos</h3>
+            </div>
+        </div>
+    {% endif %}
+</div>
+{% endblock %}

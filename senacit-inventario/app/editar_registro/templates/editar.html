@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+
+{% block title %}
+     Editar Registro Inventario
+{% endblock %}
+
+{% block content %}
+    <h1>Buscar y Editar Registro Inventario </h1><hr> <br>
+    <form method="POST" action="{{ url_for('editar_registro_bp.buscar_registro') }}">
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label for="numero_inventario" class="form-label">
+                      {{ form.numero_inventario.label }}</label>
+                    {{ form.numero_inventario(class='form-field') }}
+                </div>
+                <button type="submit" class="btn-submit">
+                    <h4> Buscar Registro </h4>
+                </button>
+            </div>
+    </div>
+    </form>
+{% endblock %}
+

@@ -1,0 +1,153 @@
+{% extends 'base.html' %}
+{% block title %}Solicitud de Traslado{% endblock %}
+
+{% block content %}
+{% if mensaje_error %}
+    <div class="alert alert-warning">
+        <h3> {{ mensaje_error }} </h3>
+    </div>
+{% endif %}
+{% if mensaje %}
+    <div class="alert alert-success">
+        <h3> {{ mensaje }} </h3>
+    </div>
+{% endif %}
+
+<form method="POST">
+    {{ form.csrf_token }}
+    
+    <h4>Datos del Solicitante [Traslado]</h4>
+    <div class="section-border">
+        <div class="row">
+          <div class="col-md-6">
+            <div class="form-group">
+                <label for="lugar" class="form-label">
+                    {{ form.lugar.label }}
+                </label>
+                {{ form.lugar(class='form-field') }}
+            </div>
+            <div class="form-group">
+                <label for="puesto" class="form-label">
+                    {{ form.puesto.label }}
+                </label>
+                {{ form.puesto(class='form-field') }}
+            </div>
+          </div>
+  
+          <div class="col-md-6">
+            <div class="form-group">
+                <label for="fecha_inicio" class="form-label">
+                    {{ form.fecha_inicio.label }}
+                </label>
+                {{ form.fecha_inicio(class='form-field') }}
+            </div>
+            <div class="form-group">
+                <label for="fecha_final" class="form-label">
+                    {{ form.fecha_final.label }}
+                </label>
+                {{ form.fecha_final(class='form-field') }}
+            </div>
+          </div>
+        </div>
+    </div>
+    <hr><br>
+    <h4>Datos del Bien y/o Materiales</h4>
+    <div class="section-border">
+        <div class="row">
+          <div class="col-md-6">
+              <div class="form-group">
+                <label for="numero_inventario" class="form-label">
+                    {{ form.numero_inventario.label }}
+                </label>
+                {{ form.numero_inventario(size=32, class='form-field') }}
+                <button id="miBoton" type="button">
+                    Buscar
+                </button>
+            </div>
+            <div class="form-group">
+                <label for="serie" class="form-label">{{ form.serie.label }}</label>
+                {{ form.serie(size=32, class='form-field') }}
+            </div>
+          </div>
+  
+          <div class="col-md-6">
+            <div class="form-group">
+                <label for="color" class="form-label">{{ form.color.label }}</label>
+                {{ form.color(class='form-field') }}
+            </div>
+            <div class="form-group">
+                <label for="descripcion" class="form-label">{{ form.descripcion.label }}</label>
+                {{ form.descripcion(class='form-field') }}
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="form-group">
+                <label for="justificacion_traslado" class="form-label">
+                {{ form.justificacion_traslado.label }}</label>
+                {{ form.justificacion_traslado(class='form-field') }}
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="col-md-6 d-flex justify-content-end align-items-center">
+                <img src="" alt="cargando..." width="100" height="100" 
+                     style="display: none;" id="imagenConsulta">
+            </div>
+          </div>
+          
+        </div>
+    </div>
+    <hr><br>
+
+<div class="form-group">
+    <button type="submit" class="btn-submit">
+       <h4> Enviar Solicitud Traslado </h4>
+    </button>
+</div>
+</form>
+
+<script>
+    // Manejo de eventos al cargar el DOM
+    $(document).ready(function() {
+        // Función para manejar el click en el botón
+        $("#miBoton").click(function() {
+            // Realizar la solicitud AJAX
+            var numero_inventario = $("#numero_inventario").val();
+    
+            $.ajax({
+                url: "/traslado/buscar_datos_numero_inventario", // Ruta que procesa la solicitud
+                method: "POST", // Método HTTP POST para obtener datos
+                data: { "numero_inventario": numero_inventario },
+                success: function(respuesta) {
+                    // Maneja la respuesta exitosa
+                    if (respuesta.estado === true) {
+                        $("#color").val(respuesta.color);
+                        $("#serie").val(respuesta.serie);
+    
+                        var imageUrl = respuesta.url_imagen;
+                        $("#imagenConsulta").attr("src", imageUrl).show();
+                        $("#imagenConsulta").show();
+    
+                    } else if (respuesta.mensaje === "no_hay_datos") {
+                        // Ocultar la imagen
+                        $("#imagenConsulta").hide();
+                        alert("Debes ingresar el número de inventario");
+                    } else {
+                        // Manejar el caso de que la respuesta esté vacía
+                        //  Ocultar la imagen
+                        $("#imagenConsulta").hide();
+                        alert("No hay datos asociados.");
+                    }
+                },
+                error: function(xhr, status, error) {
+                    // Ocultar la imagen
+                    $("#imagenConsulta").hide();
+                    // Errores de manera más detallada
+                    var errorMessage = xhr.status + ': ' + xhr.statusText;
+                    console.log(errorMessage)
+                    alert("No se pudo procesar la solicitud");
+                }
+            });
+        });
+    });
+    </script>
+{% endblock %}

@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+
+{% block title %}
+    {% if error %}
+        Error al cargar el perfil
+    {% else %}
+        {{ nombre }} {{ apellido }}
+    {% endif %}
+{% endblock %}
+
+{% block content %}
+    <div class="container">
+        {% if error %}
+            <div class="alert alert-danger" role="alert">
+                <h2>Error</h2>
+                {{ error }}
+            </div>
+        {% else %}
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="mb-3">
+                        <strong>Nombre:</strong> {{ nombre }}
+                        <hr>
+                    </div>
+                    <div class="mb-3">
+                        <strong>Apellido:</strong> {{ apellido }}
+                        <hr>
+                    </div>
+                    <div class="mb-3">
+                        <strong>Correo:</strong> {{ correo }}
+                        <hr>
+                    </div>
+                    <div class="mb-3">
+                        <strong>Número de Identidad:</strong> {{ numero_identidad | formato_numero_identidad }}
+                        <hr>
+                    </div>
+                    <div class="mb-3">
+                        <strong>Rol de Usuario:</strong> {{ rol_usuario }}
+                        <hr>
+                    </div>
+                    <div class="mb-3">
+                        <strong>Departamento Interno:</strong> {{ departamento_interno }}
+                        <hr>
+                    </div>
+                    {% if url_firma_imagen %}
+                        <div class="mb-3">
+                            <img src="{{ url_firma_imagen }}" alt="Imagen" 
+                            class="img-thumbnail mx-auto d-block" style="width: 300px; height: 100px;">
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+       
+            <a href="{{ url_for('perfil_usuario_bp.editar_perfil_usuario') }}" class="btn btn-primary">
+                Editar Perfil
+            </a>
+        {% endif %}
+    </div>
+{% endblock %}

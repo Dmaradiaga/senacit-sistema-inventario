@@ -1,0 +1,39 @@
+
+{% extends 'base_login.html' %}
+
+{% block title %}
+    Restablecer Contraseña
+{% endblock %}
+
+{% block content %}
+
+
+<form method="POST">
+    {{ form.hidden_tag() }}
+    {{ form.csrf_token }}
+
+    <h4>Restablecer Contraseña</h4> <br>
+    <div class="section-border">
+        <div class="row">
+          <div class="col-md-6">
+            <fieldset>
+              <div class="form-group">
+                <label for="correo" class="form-label">
+                    {{ form.correo.label }}
+                </label>
+                {{ form.correo(size=32, class='form-field') }}
+            </div>
+            </fieldset>
+          </div>
+        </div>
+    </div>
+    <hr>
+    <br>
+    <div class="form-group">
+        <button type="submit" class="btn-submit">
+           <h4> Enviar </h4>
+        </button>
+    </div>
+</form>
+    
+{% endblock %}

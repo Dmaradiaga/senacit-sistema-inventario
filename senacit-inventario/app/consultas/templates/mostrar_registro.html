@@ -1,0 +1,190 @@
+  {% extends "base.html" %}
+
+  {% block title %}
+      Registro Inventario
+  {% endblock %}
+
+
+  {% block content %}
+    <h1>Información del Bien</h1><hr><br> 
+
+    {% set imagenes_bien = registro[28] | cadena_diccionario %}
+      <table class="table table-bordered table-striped">
+          <tr>
+              <th scope="row">Tipo de Documento</th>
+              <td>{{ registro[0] }}</td>
+            </tr>
+            <tr>
+              <th scope="row">Número de Documento</th>
+              <td>{{ registro[1] }}</td>
+            </tr>
+            <tr>
+              <th scope="row">Descripción del Bien</th>
+              <td>{{ registro[2] }}</td>
+            </tr>
+            <tr>
+              <th scope="row">Número de Inventario</th>
+              <td>{{ registro[3] }}</td>
+            </tr>
+            <tr>
+              <th scope="row">Modelo</th>
+              <td>{{ registro[4] }}</td>
+            </tr>
+            <tr>
+              <th scope="row">Marca</th>
+              <td>{{ registro[5] }}</td>
+            </tr>
+            <tr>
+              <th scope="row">Serie</th>
+              <td>{{ registro[6] }}</td>
+            </tr>
+            {% if registro[7] %}
+              <tr>
+                <th scope="row">Placa</th>
+                <td>{{ registro[7] }}</td>
+              </tr>
+            {% endif %}
+            {% if registro[8] %}
+              <tr>
+                <th scope="row">Motor</th>
+                <td>{{ registro[8] }}</td>
+              </tr>
+            {% endif %}
+            {% if registro[9] %}
+              <tr>
+                <th scope="row">Número de Chasis</th>
+                <td>{{ registro[9] }}</td>
+              </tr>
+            {% endif %}
+            <tr>
+              <th scope="row">Color</th>
+              <td>{{ registro[10] }}</td>
+            </tr>
+            {% if registro[11] %}
+              <tr>
+                <th scope="row">Departamento</th>
+                <td>{{ registro[11] }}</td>
+              </tr>
+              <tr>
+                <th scope="row">Municipio</th>
+                <td>{{ registro[12] }}</td>
+              </tr>
+            {% endif %}
+            <tr>
+              <th scope="row">Edificio</th>
+              <td>{{ registro[13] }}</td>
+            </tr>
+            <tr>
+              <th scope="row">Piso</th>
+              <td>{{ registro[14] }}</td>
+            </tr>
+            {% if registro[15] %}
+              <tr>
+                <th scope="row">Orden de Compra</th>
+                <td>{{ registro[15] }}</td>
+              </tr>
+            {% endif %}
+            <tr>
+              <th scope="row">Fecha de Ingreso</th>
+              <td>{{ registro[16] }}</td>
+            </tr>
+            <tr>
+              <th scope="row">Costo de Adquisición</th>
+              <td>{{ registro[17] | formatear_lps }}</td>
+            </tr>
+            <tr>
+              <th scope="row">Modalidad de Contratación</th>
+              <td>{{ registro[18] }}</td>
+            </tr>
+            <tr>
+              <th scope="row">Comentario</th>
+              <td>{{ registro[19] }}</td>
+            </tr>
+            <tr>
+              <th scope="row">Estado del Bien</th>
+              <td>{{ registro[20] }}</td>
+            </tr>
+            <tr>
+              <th scope="row">Oficina</th>
+              <td>{{ registro[21] }}</td>
+            </tr>
+            <tr>
+              <th scope="row">Fecha de Documento</th>
+              <td>{{ registro[22] }}</td>
+            </tr>
+            <tr>
+              <th scope="row">Fecha de Registro del Bien</th>
+              <td>{{ registro[23] }}</td>
+            </tr>
+            <tr>
+              <th scope="row">Fecha de Registro de Inventario</th>
+              <td>{{ registro[27] }}</td>
+            </tr>
+            <tr>
+              <th scope="row">
+                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalImagenes">
+                  <b> Ver Imágenes</b>
+                </button>
+              </th>
+            </tr>
+            <tr>
+              <th scope="row">
+              <a class="btn btn-primary"
+                onclick="event.preventDefault();  document.getElementById('descargar-form-{{ registro[0] }}').submit(); ">
+                <b>Descargar PDF</b>
+            </a>
+            <form id="descargar-form-{{ registro[0] }}" action="{{ url_for('consultas_bp.descargar_pdf', numero_inventario=registro[3])}}" method="post" style="display: none;">                       
+            </form>
+              </th>
+            </tr>
+      </table>
+      <br>
+    <h1>Datos del Usuario</h1>
+      <table class="table table-bordered table-striped">
+        <tr>
+            <th scope="row">Nombre</th>
+            <td>{{ registro[24] }}</td>
+        </tr>
+        <tr>
+          <th scope="row">Apellido</th>
+          <td>{{ registro[25] }}</td>
+      </tr>
+      <tr>
+          <th scope="row">Número de Identidad</th>
+          <td>{{ registro[26] | formato_numero_identidad }}</td>
+      </tr>
+    </table>
+
+    
+      <!-- Modal de Bootstrap 5 para las imágenes -->
+    <div class="modal fade" id="modalImagenes" tabindex="-1" aria-labelledby="modalImagenesLabel" aria-hidden="true">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalImagenesLabel">Imágenes</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <!-- Carrusel Bootstrap para las imágenes -->
+                    <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel">
+                        <div class="carousel-inner">
+                            {% for imagen in imagenes_bien %}
+                                <div class="carousel-item {% if loop.first %}active{% endif %}">
+                                    <img src="{{ imagen.secure_url}}" class="d-block w-100" alt="Imagen {{ loop.index }}">
+                                </div>
+                            {% endfor %}
+                        </div>
+                        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
+                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                            <span class="visually-hidden">anterior</span>
+                        </button>
+                        <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
+                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                            <span class="visually-hidden">siguiente</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+  {% endblock %}

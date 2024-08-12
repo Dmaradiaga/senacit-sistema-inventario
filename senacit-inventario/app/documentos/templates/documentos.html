@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+
+{% block title %}
+    Documentos
+{% endblock %}
+
+{% block content %}
+<h1>Enviar Documento</h1> <hr> <br>
+<div class="container">
+    <div class="row">
+        <div class="col-md-6">
+            <form method="POST" action="{{ url_for('documentos_bp.index') }}">
+                <div class="form-group">
+                    <label for="numero_identidad_destinatario" class="form-label">
+                    {{ form.numero_identidad_destinatario.label }}</label>
+                    {{ form.numero_identidad_destinatario(class='form-field') }}
+                </div>
+                <div class="form-group">
+                    <label for="imagen" class="form-label">
+                    {{ form.imagen.label }}</label>
+                    {{ form.imagen(class='form-field') }}
+                </div>
+                <button type="submit" class="btn-submit">
+                    <h4> Enviar </h4>
+                </button>
+            </form> 
+        </div>
+    </div>
+</div>
+{% endblock %}

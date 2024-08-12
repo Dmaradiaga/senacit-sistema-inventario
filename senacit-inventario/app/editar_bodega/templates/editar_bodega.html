@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+
+{% block title %}
+     Editar Registro Bodega
+{% endblock %}
+
+{% block content %}
+    <h1>Buscar y Editar Registro  Bodega </h1><hr> <br>
+    <form method="POST" action="{{ url_for('editar_registro_bodega_bp.buscar_registro_bodega') }}">
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label for="numero_inventario" class="form-label">
+                      {{ form.numero_inventario.label }}</label>
+                    {{ form.numero_inventario(class='form-field') }}
+                </div>
+                <button type="submit" class="btn-submit">
+                    <h4> Buscar Registro </h4>
+                </button>
+            </div>
+    </div>
+    </form>
+{% endblock %}
+

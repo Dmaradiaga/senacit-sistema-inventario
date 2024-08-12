@@ -1,0 +1,58 @@
+
+{% extends 'base_login.html' %}
+
+{% block title %}
+    Login - Sistema de Inventario
+{% endblock %}
+
+{% block content %}
+
+{% if mensaje_error %}
+    <div class="alert alert-warning">
+       {{ mensaje_error }}
+    </div>
+{% endif %}
+
+
+<h4>Login</h4> <br>
+    <div class="section-border">
+        <form method="POST" class="form-login">
+            {{ form.hidden_tag() }}
+            {{ form.csrf_token }}
+                <div class="row">
+                <div class="col-md-6">
+                    <fieldset>
+                    <div class="form-group">
+                        <label for="numero_identidad" class="form-label">
+                            {{ form.numero_identidad.label }}
+                        </label>
+                        {{ form.numero_identidad(size=32, class='form-field') }}
+                    </div>
+                    <div class="form-group">
+                        <label for="contrasena" class="form-label">
+                            {{ form.contrasena.label }}
+                        </label>
+                        {{ form.contrasena(size=32, class='form-field') }}
+                    </div>
+                    </fieldset>
+                </div>
+                </div>
+            <hr>
+            <div class="form-group">
+                <button type="submit" class="btn-submit">
+                <h4> Acceder </h4>
+                </button>
+            </div>
+        </form>
+</div>
+<div class="form-group">
+    <label for="contrasena" class="form-label">
+    <a href="{{ url_for('reestablecer_contrasena_bp.index') }}"> Reestablecer contraseña</a>
+    </label> <br>
+    <label for="contrasena" class="form-label">
+        <a href="{{ url_for('reestablecer_contrasena_bp.nueva_contrasena') }}"> 
+            Tengo un código
+        </a>
+    </label>
+</div>
+{% endblock %}

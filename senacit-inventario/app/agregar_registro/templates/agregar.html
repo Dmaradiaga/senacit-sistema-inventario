@@ -1,0 +1,270 @@
+{% extends 'base.html' %}
+{% import "macro-errors.html" as macros %}
+{% block title %}Agregar Bien{% endblock %}
+
+{% block content %}
+
+<form method="POST" enctype="multipart/form-data">
+    {{ form.hidden_tag() }}
+    {{ form.csrf_token }}
+
+    <h4>Documento Respaldo</h4>
+    <div class="section-border">
+        <div class="row">
+          <div class="col-md-6">
+              <div class="form-group">
+                <label for="tipo_documento" class="form-label">
+                {{ form.tipo_documento.label }}</label>
+                {{ form.tipo_documento(size=32, class='form-field') }}
+            </div>
+            <div class="form-group">
+                <label for="numero_documento" class="form-label">{{ form.numero_documento.label }}</label>
+                {{ form.numero_documento(size=32, class='form-field') }}
+            </div>
+          </div>
+  
+          <div class="col-md-6">
+            <div class="form-group">
+                <label for="fecha_documento" class="form-label">{{ form.fecha_documento.label }}</label>
+                {{ form.fecha_documento(class='form-field') }}
+            </div>
+          </div>
+        </div>
+    </div>
+    <hr>
+
+    <h4>Especificación del Bien</h4>
+    <div class="section-border">
+        <div class="row">
+          <div class="col-md-6">
+                <div class="form-group">
+                    <label for="descripcion" class="form-label">{{ form.descripcion.label }}</label>
+                    {{ form.descripcion(size=32, class='form-field') }}
+                </div>
+                <div class="form-group">
+                    <label for="numero_inventario" class="form-label">{{ form.numero_inventario.label }}</label>
+                     {{ form.numero_inventario(size=32,class='form-field') }}
+                </div>
+                <div class="form-group">
+                    <label for="modelo" class="form-label">{{ form.modelo.label }}</label>
+                     {{ form.modelo(size=32,class='form-field') }}
+                </div>
+            
+                <div class="form-group"> 
+                    <label for="marca" class="form-label">{{ form.marca.label }}</label>
+                     {{ form.marca(size=32,class='form-field') }}
+                </div>
+          </div>
+  
+          <div class="col-md-6">
+            <div class="form-group"> 
+                <label for="serie" class="form-label">{{ form.serie.label }}</label>
+                {{ form.serie(size=32,class='form-field') }}
+            </div>
+            
+            <div class="form-group">
+                <label for="placa" class="form-label">{{ form.placa.label }}</label>
+                {{ form.placa(size=32,class='form-field') }}
+            </div>
+        
+            <div class="form-group"> 
+                <label for="motor" class="form-label">{{ form.motor.label }}</label>
+                 {{ form.motor(size=32,class='form-field') }}
+            </div>
+            
+    <div class="form-group">
+        <label for="numero_chasis" class="form-label">{{ form.numero_chasis.label }}</label>
+        {{ form.numero_chasis(size=32, class='form-field') }}
+    </div>
+    
+    <div class="form-group">
+        <label for="color" class="form-label">{{ form.color.label }}</label>
+        {{ form.color(size=32, class='form-field') }}
+    </div>
+          </div>
+        </div>
+    </div>
+    <hr>
+
+      <h4>Ubicación</h4>
+      <div class="section-border">
+        <div class="row">
+          <div class="col-md-6">
+                <div class="form-group">
+                    <label for="departamento" class="form-label">
+                      {{ form.departamento.label }}
+                    </label>
+                    {{ form.departamento(class='form-field') }}
+                </div>
+                
+                <div class="form-group">
+                    <label for="municipio" class="form-label">{{ form.municipio.label }}</label>
+                    <select id="municipio" name="municipio" class="form-control">
+                        <!-- Opciones de municipios que se actualizarán dinámicamente -->
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="edificio" class="form-label">{{ form.edificio.label }}</label>
+                    {{ form.edificio(size=32, class='form-field') }}
+                </div>
+                
+          </div>
+  
+          <div class="col-md-6">
+                <div class="form-group">
+                    <label for="oficina" class="form-label">{{ form.oficina.label }}</label>
+                    {{ form.oficina(size=32, class='form-field') }}
+                </div>
+                <div class="form-group">
+                    <label for="piso" class="form-label">{{ form.piso.label }}</label>
+                    {{ form.piso(size=32, class='form-field') }}
+                </div>
+                <div class="form-group">
+                  <label for="departamento_interno" class="form-label">
+                    {{ form.departamento_interno.label }}</label>
+                  {{ form.departamento_interno(class='form-field') }}
+              </div>
+          </div>
+        </div>
+      </div>
+      <hr>
+
+      <h4>Valuación</h4>
+      <div class="section-border">
+        <div class="row">
+          <div class="col-md-6">
+            <fieldset>
+                <div class="form-group">
+                    <label for="orden_compra" class="form-label">{{ form.orden_compra.label }}</label>
+                    {{ form.orden_compra(size=32, class='form-field') }}
+                </div>
+                <div class="form-group">
+                    <label for="costo_adquisicion" class="form-label">{{ form.costo_adquisicion.label }}</label>
+                    {{ form.costo_adquisicion(size=32, class='form-field') }}
+                </div>
+            </fieldset>
+          </div>
+  
+          <div class="col-md-6">
+            <fieldset>
+                <div class="form-group">
+                    <label for="fecha_ingreso" class="form-label">{{ form.fecha_ingreso.label }}</label>
+                    {{ form.fecha_ingreso(class='form-field') }}
+                </div>
+            </fieldset>
+          </div>
+        </div>
+      </div>
+      <hr>
+
+      <h4>Responsable del Bien</h4>
+      <div class="section-border">
+        <div class="row">
+          <div class="col-md-6">
+            <fieldset>
+                <div class="form-group">
+                    <label for="modalidad_contratacion" class="form-label">{{ form.modalidad_contratacion.label }}</label>
+                    {{ form.modalidad_contratacion(class='form-field') }}
+                </div>
+                <div class="form-group">
+                    <label for="numero_identidad" class="form-label">{{ form.numero_identidad.label }}</label>
+                    {{ form.numero_identidad(size=32, class='form-field') }}
+                </div>
+
+            </fieldset>
+          </div>
+
+        </div>
+      </div>
+      <hr>
+
+      <h4>Observaciones</h4>
+      <div class="section-border">
+        <div class="row">
+          <div class="col-md-6">
+              <div class="form-group">
+                <label for="estado_bien" class="form-label">
+                  {{ form.estado_bien.label }}
+                </label>
+                  {{ form.estado_bien(class='form-field') }}
+              </div>
+                <div class="form-group">
+                    <label for="comentario" class="form-label">{{ form.comentario.label }}</label>
+                    {{ form.comentario(rows=4, cols=50, class='form-field') }}
+                </div>
+          </div>
+  
+          <div class="col-md-6">
+            <fieldset>
+                <div class="form-group">
+                    <label for="fecha_ingreso_bien" class="form-label">{{ form.fecha_ingreso_bien.label }}</label>
+                    {{ form.fecha_ingreso_bien(size=32, class='form-field') }}
+                </div>
+                
+                <div class="form-group">
+                    <label for="imagen" class="form-label">{{ form.imagen.label }}</label>
+                        {{ form.imagen(size=32,class="form-control-file") }}
+                </div>
+            </fieldset>
+          </div>
+        </div>
+      </div>
+      <hr>
+
+ <br>
+<div class="form-group">
+    <button type="submit" class="btn-submit">
+       <h4> Agregar Registro </h4>
+    </button>
+</div>
+</form>
+<script>
+
+  // Función para cargar el archivo JSON
+  function cargarMunicipios() {
+      // Solicitud HTTP GET para obtener el archivo JSON
+      fetch('/static/municipios.json')
+          .then(response => response.json()) // Convertir la respuesta a JSON
+          .then(data => {
+            console.log(data)
+              // Guardar los datos del JSON en la variable municipiosPorDepartamento
+              var municipiosPorDepartamento = data;
+              
+              // Obtener referencia al campo de selección de departamento
+              var departamentoSelect = document.getElementById('departamento');
+              // Obtener referencia al campo de selección de municipio
+              var municipioSelect = document.getElementById('municipio');
+              
+              // Función para cargar dinámicamente las opciones de municipios
+              function actualizarMunicipios() {
+                  // Obtener el valor seleccionado del departamento
+                  var departamentoSeleccionado = departamentoSelect.value;
+                  
+                  // Limpiar las opciones actuales del campo de selección de municipio
+                  municipioSelect.innerHTML = '';
+                  
+                  // Obtener las opciones de municipios correspondientes al departamento seleccionado
+                  var municipiosCorrespondientes = municipiosPorDepartamento[departamentoSeleccionado];
+                  
+                  // Agregar las opciones de municipios al campo de selección de municipio
+                  municipiosCorrespondientes.forEach(function(municipio) {
+                      var option = document.createElement('option');
+                      option.text = municipio;
+                      option.value = municipio;
+                      municipioSelect.add(option);
+                  });
+              }
+              
+              // Escuchar el evento de cambio en el campo de selección de departamento
+              departamentoSelect.addEventListener('change', actualizarMunicipios);
+              
+              // Llamar a la función actualizarMunicipios al cargar la página para mostrar los municipios iniciales
+              actualizarMunicipios();
+          })
+          .catch(error => console.error('Error al cargar los municipios:', error)); // Manejar errores de carga
+  }
+  
+  // Llamar a la función cargarMunicipios al cargar la página para obtener los datos del JSON
+  cargarMunicipios();
+</script>
+{% endblock %}

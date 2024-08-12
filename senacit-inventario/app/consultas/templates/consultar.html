@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+
+{% block title %}
+    Consultar Bienes
+{% endblock %}
+
+{% block content %}
+    <h1>Consultar Bienes</h1>
+    <hr>
+    <div class="container mt-4">
+        <div class="row">
+            <div class="col-md-4 mb-3">
+                <form method="POST" action="{{ url_for('consultas_bp.buscar_registro_numero_inventario') }}">
+                    <div class="form-group">
+                        <label for="numero_inventario" class="form-label">
+                            {{ form.numero_inventario.label }}
+                        </label>
+                        {{ form.numero_inventario(class='form-control') }}
+                    </div>
+                    <button type="submit" class="btn btn-primary mt-2">
+                        Consultar
+                    </button>
+                </form> 
+            </div>
+            <div class="col-md-4 mb-3">
+                <form method="POST" action="{{ url_for('consultas_bp.buscar_registro_numero_inventario_bodega') }}">
+                    <div class="form-group">
+                        <label for="numero_inventario_bodega" class="form-label">
+                            {{ form.numero_inventario_bodega.label }}
+                        </label>
+                        {{ form.numero_inventario_bodega(class='form-control', aria_label='Número de inventario de bodega') }}
+                    </div>
+                    <button type="submit" class="btn btn-primary mt-2">
+                        Consultar
+                    </button>
+                </form> 
+            </div>
+            <div class="col-md-4 mb-3">
+                <form method="POST" action="{{ url_for('consultas_bp.buscar_registro_numero_identidad') }}">       
+                    <div class="form-group">
+                        <label for="numero_identidad" class="form-label">
+                            {{ form.numero_identidad.label }}
+                        </label>
+                        {{ form.numero_identidad(class='form-control', aria_label='Número de identidad') }}
+                    </div>
+                    <button type="submit" class="btn btn-primary mt-2">
+                        Consultar
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,51 @@
+
+{% extends 'base_login.html' %}
+
+{% block title %}
+    Ingresar Nueva Contraseña
+{% endblock %}
+
+{% block content %}
+
+
+<form method="POST">
+    {{ form.hidden_tag() }}
+    {{ form.csrf_token }}
+
+    <h4>Ingresar Nueva Contraseña</h4> <br>
+    <div class="section-border">
+        <div class="row">
+          <div class="col-md-6">
+            <div class="form-group">
+              <label for="contrasena class="form-label">
+                  {{ form.contrasena.label }}
+              </label>
+              {{ form.contrasena(size=32, class='form-field') }}
+          </div>
+          <div class="form-group">
+            <label for="verificar Contrasena class="form-label">
+                {{ form.verificar_contrasena.label }}
+            </label>
+            {{ form.verificar_contrasena(size=32, class='form-field') }}
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="form-group">
+            <label for="codigo" class="form-label">
+                {{ form.codigo.label }}
+            </label>
+            {{ form.codigo(size=32, class='form-field') }}
+        </div>
+        </div>
+        </div>
+    </div>
+    <hr>
+    <br>
+    <div class="form-group">
+        <button type="submit" class="btn-submit">
+           <h4> Restablecer </h4>
+        </button>
+    </div>
+</form>
+    
+{% endblock %}
